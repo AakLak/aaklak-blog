@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="{{ .Lang }}">
-  {{ partial "head.html" . }}
-  <body>
-    {{ partial "nav.html" . }}
-    {{ block "header" . }}{{ partial "header.html" . }}{{ end }}
-    {{ block "main" . }}{{ end }}
-    {{ partial "footer.html" . }}
+{{ partial "head.html" . }}
+  <body class="{{ .Site.Params.themeColor }} {{if .Site.Params.layoutReverse}}layout-reverse{{end}}">
+  {{ partial "sidebar.html" . }}
+    <div class="content container">
+    {{ block "main" . -}}{{- end }}
+    </div>
+
+    {{ template "_internal/google_analytics_async.html" . }}
   </body>
 </html>
-
