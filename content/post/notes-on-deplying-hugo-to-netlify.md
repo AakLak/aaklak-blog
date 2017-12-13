@@ -5,7 +5,7 @@ subtitle: ""
 tags: ["Hugo", "Netlify"]
 draft: false
 ---
-Steps for deploying [Hugo](https://gohugo.io/) to [Netlify](https://www.netlify.com/).
+Quick steps for deploying [Hugo](https://gohugo.io/) to [Netlify](https://www.netlify.com/).
 <!--more-->
 ## Install Hugo & dependencies
 ```
@@ -28,9 +28,8 @@ $ git submodule update
 ```
 
 ## Configure theme
-Copy the `config.toml` file from theme's `exampleSite` folder to the root folder.<br>
-Copy any desired layouts from theme folder to the root folder.
-Make sure to read the theme's page on [themes.gohugo.io](themes.gohugo.io) & read their Github for more info.
+Add `1heme = "theme_name"` to your `config.toml` file in the site root directory.<br>r.
+Make sure to read the theme's page on [themes.gohugo.io](themes.gohugo.io) & read their Github for additional theme specific setup info.
 
 ## Git it
 You know the drill.<br>
