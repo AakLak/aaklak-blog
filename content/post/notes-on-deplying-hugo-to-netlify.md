@@ -5,7 +5,7 @@ subtitle: ""
 tags: ["Hugo", "Netlify"]
 draft: false
 ---
-Quick steps for deploying [Hugo](https://gohugo.io/) to [Netlify](https://www.netlify.com/).
+Quick steps on deploying [Hugo](https://gohugo.io/) to [Netlify](https://www.netlify.com/).
 <!--more-->
 ## Install Hugo & dependencies
 ```
@@ -17,9 +17,8 @@ $ go install github.com/gohugoio/hugo
 
 ## Download a theme
 Pick a theme from [Hugo themes](https://themes.gohugo.io/).
-Create a `themes` folder in `site` root.<br>
-Clone or add theme as submodule into the `themes` folder.<br>
-<sup>Netlify requires submodle.</sup>
+Clone or add theme as submodule into the `themes` folder in you site root directory.<br>
+<sup>Netlify requires submodule.</sup>
 ```
 $ cd themes
 $ git submodule add https://github.com/halogenica/beautifulhugo.git
@@ -28,8 +27,8 @@ $ git submodule update
 ```
 
 ## Configure theme
-Add `1heme = "theme_name"` to your `config.toml` file in the site root directory.<br>r.
-Make sure to read the theme's page on [themes.gohugo.io](themes.gohugo.io) & read their Github for additional theme specific setup info.
+Add `theme = "theme_name"` to your `config.toml` file in the site root directory.<br>r.
+Make sure to read the theme's page on [themes.gohugo.io](themes.gohugo.io) & Github for additional theme specific setup info.
 
 ## Git it
 You know the drill.<br>
@@ -50,6 +49,6 @@ Host on [Netlify](https://netlify.com).<br>
 Process is straightforward, visit the site and their onboarding guide explains it excellently!
 
 ## Resources:
-[Hugo Docs - Install Hugo](https://gohugo.io/getting-started/installing/)
-[Hugo Themes](https://themes.gohugo.io/)
+[Hugo Docs - Install Hugo](https://gohugo.io/getting-started/installing/)<br>
+[Hugo Themes](https://themes.gohugo.io/)<br>
 [Hugo Docs - Host on Netlify](https://gohugo.io/hosting-and-deployment/hosting-on-netlify/)
