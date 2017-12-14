@@ -9,6 +9,10 @@ pygmentCodeFences = true
 #disqusShortname = "XXX"
 #googleAnalytics = "XXX"
 
+[blackfriday]
+hrefTargetBlank = true
+  extensions = ["hardLineBreak"]
+  
 [Params]
   subtitle = ""
   logo = "img/aaklak-logo.png"
