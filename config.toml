@@ -4,15 +4,16 @@ DefaultContentLanguage = "en"
 title = "AakLak"
 theme = "hyde"
 metaDataFormat = "yaml"
-pygmentsUseClasses = true
-pygmentCodeFences = true
+# pygmentsUseClasses = true
+# pygmentCodeFences = true
+pygmentsStyle="monokai"
 #disqusShortname = "XXX"
 #googleAnalytics = "XXX"
 
 [blackfriday]
 hrefTargetBlank = true
   extensions = ["hardLineBreak"]
-  
+
 [Params]
   subtitle = ""
   logo = "img/aaklak-logo.png"
