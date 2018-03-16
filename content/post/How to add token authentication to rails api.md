@@ -1,6 +1,6 @@
 ---
 title: "How to Add Token Authentication to a Rails 5 API"
-date: 2017-07-21
+date: 2018-02-17
 subtitle: ""
 tags: ["Rails", "API", "devise_token_auth", "postman"]
 draft: false
