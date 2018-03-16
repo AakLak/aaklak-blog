@@ -7,10 +7,30 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>lakhotia.aakash@gmail.com (Aakash Lakhotia)</managingEditor>
     <webMaster>lakhotia.aakash@gmail.com (Aakash Lakhotia)</webMaster>
-    <lastBuildDate>Fri, 21 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 30 Dec 2017 14:05:25 -0800</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>My Journey Building a Rails 5 API</title>
+      <link>/post/my-journey-building-a-rails-5-api/</link>
+      <pubDate>Sat, 30 Dec 2017 14:05:25 -0800</pubDate>
+      <author>lakhotia.aakash@gmail.com (Aakash Lakhotia)</author>
+      <guid>/post/my-journey-building-a-rails-5-api/</guid>
+      <description>&lt;p&gt;Notes &amp;amp; thoughts on building my first API with Rails 5.&lt;br /&gt;
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to Set a Custom Domain Name on Netlify in ~~3~~ 2 Steps</title>
+      <link>/post/how-to-custom-domain-netlify/</link>
+      <pubDate>Thu, 14 Dec 2017 03:42:50 -0800</pubDate>
+      <author>lakhotia.aakash@gmail.com (Aakash Lakhotia)</author>
+      <guid>/post/how-to-custom-domain-netlify/</guid>
+      <description>&lt;p&gt;Quick steps on setting up a custom domain name on &lt;a href=&#34;https://www.netlify.com/&#34; target=&#34;_blank&#34;&gt;Netlify&lt;/a&gt;.&lt;br /&gt;
+&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Notes: Deploying Hugo To Netlify</title>
@@ -18,7 +38,7 @@
       <pubDate>Fri, 21 Jul 2017 00:00:00 +0000</pubDate>
       <author>lakhotia.aakash@gmail.com (Aakash Lakhotia)</author>
       <guid>/post/notes-on-deplying-hugo-to-netlify/</guid>
-      <description>&lt;p&gt;Deploying &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; to &lt;a href=&#34;https://www.netlify.com/&#34;&gt;Netlify&lt;/a&gt; using &lt;a href=&#34;https://github.com/netlify/victor-hugo&#34;&gt;Victory Hugo&lt;/a&gt; boilerplate.
+      <description>&lt;p&gt;Quick steps on deploying &lt;a href=&#34;https://gohugo.io/&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; to &lt;a href=&#34;https://www.netlify.com/&#34; target=&#34;_blank&#34;&gt;Netlify&lt;/a&gt;.&lt;br /&gt;
 &lt;/p&gt;</description>
     </item>
     

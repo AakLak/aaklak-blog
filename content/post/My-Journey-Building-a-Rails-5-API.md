@@ -10,7 +10,7 @@ Notes & thoughts on building my first API with Rails 5.
 ## What am I making?
 This app will be used by developers who write scripts which automate repetitive tasks.
 
-Developers will be able to create a profile for their scripts, and use the API to record actions it as automated in the game, ex: runtime, monsters killed, trees cut, fish caught, etc.
+Developers will be able to create a profile for their scripts, and use the API to record actions it as automated, ex: runtime, monsters killed, trees cut, fish caught, etc.
 
 This data can be used to track and compare stats between scripts & individual users.
 
@@ -23,7 +23,7 @@ $ rails new rsscriptstats --api --database=postgresql
 
 
 ## Setup RSpec
-Setup [RSpec](https://github.com/rspec/rspec) before models to utilize its auto-generated model tests.
+Setup [RSpec](https://github.com/rspec/rspec) before models to utilize its auto-generated tests.
 
 {{< highlight ruby >}}
 group :development, :test do
@@ -31,20 +31,33 @@ group :development, :test do
 end
 {{< / highlight >}}
 
+
 {{< highlight bash >}}
 $ bundle install
 $ rails generate rspec:install
 {{< / highlight >}}
 
 ## Setup up Active Record
-Going to start with a script & commit model.
+### Models & Associations
+Going to start with these models:
 {{< highlight bash >}}
-$ rails g scaffold Script name:string type:string bot_for:string game_for:string
-$ rails g scaffold Commit runtime:integer amount:float
+$ rails g devise_token_auth:install User auth
+$ rails g scaffold Script name:string skill:string bot_for:string game_for:string
+$ rails g scaffold Commit runtime:integer
+$ rails g scaffold Stat task:string amount:float
 {{< / highlight >}}
+
+User model generated using [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth) gem.
+
+
+I learned:
+You can set assocaitions & delete scaffolds via command line scaffold.
+rails d scaffold Stat task:string amount:float
 
 ### Set model associations
 Scripts have many commits, commits belong to a script.
+Commits have many stats, stats belong to a commit.
+
 {{< highlight ruby >}}
 #/app/models/script.rb
 class Script < ApplicationRecord
@@ -127,7 +140,7 @@ Rails.application.routes.draw do
 end
 {{</highlight  >}}
 
-Will also need to update the location parameter of the response object in the controller to reflect the new route.
+Will also need to update the location parameter path in the controller to reflect the new route.
 Explained in more detailed on this [Stack Overflow answer](https://stackoverflow.com/questions/23582389/rails-nomethoderror-undefined-method-url-for-controller-i-cant-seem-to-res)
 {{< highlight ruby >}}
 render json: @commit, status: :created, location: api_v1_commit_url(@commit)
@@ -137,6 +150,56 @@ render json: @commit, status: :created, location: api_v1_commit_url(@commit)
 
 Note:
 I had to make sure to permit necessary parameters in the controller before successfully cURL POSTing to the endpoint.
+
+## Adding Authentication
+Using [devise_token_auth](ttps://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth) gem
+
+Add `devise_token_auth` to gemfile
+{{< highlight ruby >}}
+gem 'devise_token_auth'
+{{< /highlight >}}
+
+Install dependencies
+{{< highlight bash >}}
+$ bundle
+{{< /highlight >}}
+
+Generate a user model
+{{< highlight bash >}}
+$ rails g devise_token_auth:install User auth
+{{< /highlight >}}
+
+If it's an API only app, disable Devise flash messages in `config/initializers/devise.rb`
+{{< highlight ruby >}}
+Devise.setup do |config|
+    config.navigational_formats = [ :json ]
+end
+{{< /highlight >}}
+
+Migrate
+{{< highlight bash >}}
+$ rails db:migrate
+{{< /highlight >}}
+
+## Accepted Nested Attributes
+#rsscriptstats/app/models/commit.rb
+Accepted nested parameters in model.
+http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html
+{{< highlight ruby "hl_lines=2 4">}}
+class Commit < ApplicationRecord
+  has_many :stats
+
+  accepts_nested_attributes_for :stats
+end
+{{< /highlight >}}
+
+Allow the nested resources' params in controller.
+{{< highlight ruby >}}
+def commit_params
+  params.require(:commit).permit(:task, :runtime, :script_id, :user_id, stats_attributes: [:task, :amount, :commit_id])
+end
+{{< /highlight >}}
+
 
 
 <br><br><br><br><br><br><br><br><br><br><br>
@@ -168,20 +231,80 @@ http://www.dailysmarty.com/posts/how-to-use-jwt-authentication-in-a-rails-5-api-
 https://sourcey.com/building-the-prefect-rails-5-api-only-app/#authenticating-your-api
 https://scotch.io/tutorials/build-a-restful-json-api-with-rails-5-part-two
 https://paweljw.github.io/2017/07/rails-5.1-api-with-vue.js-frontend-part-4-authentication-and-authorization/
-https://medium.com/@nick.hartunian/knock-jwt-auth-for-rails-api-create-react-app-6765192e295a
-https://www.valentinog.com/blog/devise-token-auth-rails-api/
-https://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth
+  Knock
+  https://medium.com/@nick.hartunian/knock-jwt-auth-for-rails-api-create-react-app-6765192e295a
+
+devise_token_auth
+  https://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth
 
 Frontend
 https://medium.com/devtechtipstricks/build-a-simple-rails-api-server-auth0-jwt-authentication-react-from-scratch-in-30-minutes-or-257cbb2a939a
 
+Why foreign keys should always be indexed:
+https://alexpeattie.com/blog/stop-forgetting-foreign-key-indexes-in-rails-post-migration-script
 
 
-
-
+JWT Token Gems
+https://github.com/jwt/ruby-jwt
+https://github.com/nsarno/knock
 https://github.com/lynndylanhurley/devise_token_auth
 https://github.com/plataformatec/devise/wiki/How-To:-Simple-Token-Authentication-Example
 
 
 Other:
 https://www.theredrooffs.com/blog/2017/services-what-i-wish-i-learned-as-a-new-rails-developer
+
+  JSONAPI-Rails
+  https://github.com/jsonapi-rb/jsonapi-rails
+
+  Belongs to Devise User
+  https://stackoverflow.com/questions/31106980/how-to-create-an-association-between-devise-user-model-and-new-model-in-rails
+
+
+
+Problems & Solutions
+
+  https://www.google.com/search?q=rails+api+%22user%22%3A+%5B+%22must+exist%22+%5D&oq=rails+api+%22user%22%3A+%5B+%22must+exist%22+%5D&aqs=chrome..69i57.1332j0j7&sourceid=chrome&ie=UTF-8
+  Put user migration before others, change date or other method
+
+  https://stackoverflow.com/questions/48334075/activemodelunknownattributeerror-unknown-attribute-when-seeding-belongs-to-re
+
+  https://stackoverflow.com/questions/46837161/passing-post-request-through-postman-for-has-many-association-in-rails
+  https://stackoverflow.com/questions/18486674/rails-model-error-associationtypemismatch-expected-got-string
+
+  https://www.google.com/search?ei=KFpkWtueMoSWjQOT7ZrgBA&q=%22Unpermitted%22+parameter%3A+%3A+%22_attributes%22&oq=%22Unpermitted%22+parameter%3A+%3A+%22_attributes%22&gs_l=psy-ab.3..0i7i30k1j0i7i10i30k1l2.4848.9790.0.10095.4.4.0.0.0.0.91.341.4.4.0....0...1c.1.64.psy-ab..0.4.340...0i8i30k1j0i8i10i30k1j0i10i30k1j0i22i10i30k1j0i22i30k1.0.SMmNrXU8jno
+
+
+https://stormconsultancy.co.uk/blog/development/tools-plugins/generating-code-coverage-metrics-for-a-ruby-on-rails-project-with-simplecov/
+
+Factorygirl & RSpec
+  https://semaphoreci.com/community/tutorials/how-to-test-rails-models-with-rspec
+
+  My Q: https://stackoverflow.com/questions/48499505/devise-factorybot-authentication-for-rspec-post-request
+  https://blog.pardner.com/2012/10/how-to-specify-traits-for-model-associations-in-factorygirl/
+  https://stackoverflow.com/questions/24570281/what-to-add-to-rspec-valid-attributes-when-it-is-validating-related-models
+
+  https://devhints.io/factory_bot
+  https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md
+  https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
+  https://semaphoreci.com/blog/2014/01/14/rails-testing-antipatterns-fixtures-and-factories.html
+  https://stackoverflow.com/questions/11002721/authentication-with-devise-in-rspec-tests
+  https://gist.github.com/kyletcarlson/6234923
+  https://semaphoreci.com/community/tutorials/how-to-test-rails-models-with-rspec
+  https://medium.com/@csofiamsousa/testing-covering-and-documenting-ruby-on-rails-apis-26fe4f4c934d
+
+http://www.thegreatcodeadventure.com/better-rails-5-api-controller-tests-with-rspec-shared-examples/
+
+
+API To Full
+ - https://stackoverflow.com/questions/36669981/how-do-you-convert-a-rails-5-api-app-to-a-rails-app-that-can-act-as-both-api-and
+ - https://stackoverflow.com/questions/25031985/rails-4-upgrade-jsonparseerror-for-old-sessions
+
+Removing Devise Token Authentication
+  - https://stackoverflow.com/questions/6833161/ruby-how-to-uninstall-devise
+  - rsscriptstats [remove-devise-token-auth] :> rails destroy devise_token_auth:install User
+Running via Spring preloader in process 76916
+      remove  config/initializers/devise_token_auth.rb
+      remove  db/migrate/20171230080350_devise_token_auth_create_users.rb
+     skipped  Concern is already included in the application controller.
+     skipped  Routes already exist for User at auth

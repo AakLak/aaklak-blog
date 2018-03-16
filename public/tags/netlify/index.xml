@@ -18,7 +18,7 @@
       <pubDate>Fri, 21 Jul 2017 00:00:00 +0000</pubDate>
       <author>lakhotia.aakash@gmail.com (Aakash Lakhotia)</author>
       <guid>/post/notes-on-deplying-hugo-to-netlify/</guid>
-      <description>&lt;p&gt;Deploying &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; to &lt;a href=&#34;https://www.netlify.com/&#34;&gt;Netlify&lt;/a&gt; using &lt;a href=&#34;https://github.com/netlify/victor-hugo&#34;&gt;Victory Hugo&lt;/a&gt; boilerplate.
+      <description>&lt;p&gt;Quick steps on deploying &lt;a href=&#34;https://gohugo.io/&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; to &lt;a href=&#34;https://www.netlify.com/&#34; target=&#34;_blank&#34;&gt;Netlify&lt;/a&gt;.&lt;br /&gt;
 &lt;/p&gt;</description>
     </item>
     

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.31.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>My Journey Building a Rails 5 API &middot; AakLak</title>
+
+  
+  <link rel="stylesheet" href="/css/print.css" media="print">
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <link rel="stylesheet" href="/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="AakLak" />
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="/"><h1>AakLak</h1></a>
+      <p class="lead">
+      An elegant open source and mobile first theme for <a href="http://hugo.spf13.com">hugo</a> made by <a href="http://twitter.com/mdo">@mdo</a>. Originally made for Jekyll.
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/"> Blog </a></li><li><a href=""> Samples </a></li><li><a href="page/about/"> About </a></li><li><a href="tags"> Tags </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>My Journey Building a Rails 5 API</h1>
+  <span class="post-date">Sat, Dec 30, 2017</span>
+  <p>Notes &amp; thoughts on building my first API with Rails 5.<br />
+</p>
+
+<h2 id="what-am-i-making">What am I making?</h2>
+
+<p>This app will be used by developers who write scripts which automate repetitive tasks.</p>
+
+<p>Developers will be able to create a profile for their scripts, and use the API to record actions it as automated in the game, ex: runtime, monsters killed, trees cut, fish caught, etc.</p>
+
+<p>This data can be used to track and compare stats between scripts &amp; individual users.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>Going to generate a Rails <a href="http://edgeguides.rubyonrails.org/api_app.html" target="_blank">API only app</a> using PostgreSQL since I&rsquo;m hosting on <a href="https://www.heroku.com/" target="_blank">Heroku</a>.</p>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ rails new rsscriptstats --api --database<span style="color:#f92672">=</span>postgresql</code></pre></div><em><a href="https://2017.postgresopen.org/blog-heroku/" target="_blank">An Interview with Heroku on Postgres</a></em></p>
+
+<h2 id="setup-rspec">Setup RSpec</h2>
+
+<p>Setup <a href="https://github.com/rspec/rspec" target="_blank">RSpec</a> before models to utilize its auto-generated model tests.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">group <span style="color:#e6db74">:development</span>, <span style="color:#e6db74">:test</span> <span style="color:#66d9ef">do</span>
+  gem <span style="color:#e6db74">&#39;rspec-rails&#39;</span>, <span style="color:#e6db74">&#39;~&gt; 3.6&#39;</span>
+<span style="color:#66d9ef">end</span></code></pre></div>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ bundle install
+$ rails generate rspec:install</code></pre></div>
+
+<h2 id="setup-up-active-record">Setup up Active Record</h2>
+
+<p>Going to start with a script &amp; commit model.<br />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ rails g scaffold Script name:string type:string bot_for:string game_for:string
+$ rails g scaffold Commit runtime:integer amount:float</code></pre></div></p>
+
+<h3 id="set-model-associations">Set model associations</h3>
+
+<p>Scripts have many commits, commits belong to a script.<br />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#75715e">#/app/models/script.rb</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Script</span> <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">ApplicationRecord</span>
+  has_many <span style="color:#e6db74">:commits</span>
+<span style="color:#66d9ef">end</span>
+
+<span style="color:#75715e">#/app/models/commit.rb</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Commit</span> <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">ApplicationRecord</span>
+  belongs_to <span style="color:#e6db74">:script</span>
+<span style="color:#66d9ef">end</span>
+
+<span style="color:#75715e">#/db/migrate/20171231022832_create_commits.rb</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CreateCommits</span> <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">ActiveRecord</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Migration</span><span style="color:#f92672">[</span><span style="color:#ae81ff">5</span><span style="color:#f92672">.</span><span style="color:#ae81ff">1</span><span style="color:#f92672">]</span>
+  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e"></span><span style="color:#f92672"></span><span style="color:#a6e22e">change</span>
+    create_table <span style="color:#e6db74">:commits</span> <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>t<span style="color:#f92672">|</span>
+      t<span style="color:#f92672">.</span>belongs_to <span style="color:#e6db74">:script</span>, <span style="color:#e6db74">index</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e">#Add this line</span>
+      t<span style="color:#f92672">.</span>string <span style="color:#e6db74">:task</span>
+      t<span style="color:#f92672">.</span>float <span style="color:#e6db74">:amount</span>
+      t<span style="color:#f92672">.</span>timestamps
+    <span style="color:#66d9ef">end</span>
+  <span style="color:#66d9ef">end</span>
+<span style="color:#66d9ef">end</span></code></pre></div></p>
+
+<h2 id="seeding">Seeding</h2>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">test_script <span style="color:#f92672">=</span> <span style="color:#66d9ef">Script</span><span style="color:#f92672">.</span>create(name: <span style="color:#e6db74">&#34;YWoodcutter&#34;</span>,
+              <span style="color:#e6db74">skill</span>: <span style="color:#e6db74">&#34;Woodcutting&#34;</span>,
+              <span style="color:#e6db74">bot_for</span>: <span style="color:#e6db74">&#34;TRiBot&#34;</span>,
+              <span style="color:#e6db74">game_for</span>: <span style="color:#e6db74">&#34;Oldschool Runescape 07&#34;</span>)
+
+
+test_commit_1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">Commit</span><span style="color:#f92672">.</span>new(<span style="color:#e6db74">task</span>: <span style="color:#e6db74">&#34;Logs Cut&#34;</span>,
+                              <span style="color:#e6db74">amount</span>: <span style="color:#e6db74">&#34;5&#34;</span>)
+test_commit_1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">Commit</span><span style="color:#f92672">.</span>new(<span style="color:#e6db74">task</span>: <span style="color:#e6db74">&#34;Oak Cut&#34;</span>,
+                              <span style="color:#e6db74">amount</span>: <span style="color:#e6db74">&#34;10&#34;</span>)
+
+test_script<span style="color:#f92672">.</span>commits <span style="color:#f92672">&lt;&lt;</span> test_commit_1
+test_script<span style="color:#f92672">.</span>commits <span style="color:#f92672">&lt;&lt;</span> test_commit_2</code></pre></div>
+
+<h2 id="versioning">Versioning</h2>
+
+<p><img src="https://chriskottom.com/images/versioning-commitstrip.jpg" alt="Versioning API Comic" /></p>
+
+<p>Decide on an interface strategy. Different strategies explained here:<br />
+<a href="https://chriskottom.com/blog/2017/04/versioning-a-rails-api/" target="_blank">Versioning a Rails API by Chris</a></p>
+
+<p>I decided on URL namespaceing since it was covered the most thoroughly online, and  was mentioned in the <a href="https://handbook.infinum.co/books/rails/Building%20an%20API" target="_blank">Infinifum Rails Handbook.</a></p>
+
+<h3 id="namespacing-routing">Namespacing &amp; Routing</h3>
+
+<p>Going to organize my filestructure to better accommodate for versioned API.<br />
+<img src="https://i.imgur.com/nBy3ykB.png" alt="Rails API Version Filestructure" /></p>
+
+<p>You can namespace controllers by using the module keyword:<br />
+<a href="https://devblast.com/b/namespace-controllers-rails" target="_blank">How to Namespace Controllers in Rails</a><br />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="background-color:#3c3d38;display:block;width:100%"><span style="color:#66d9ef">module</span> Api::V1
+</span>  <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CommitsController</span> <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">ApplicationController</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e"></span><span style="color:#f92672"></span><span style="color:#a6e22e">index</span>
+      @commits <span style="color:#f92672">=</span> <span style="color:#66d9ef">Commit</span><span style="color:#f92672">.</span>all
+
+      render <span style="color:#e6db74">json</span>: @commits
+    <span style="color:#66d9ef">end</span>
+
+    <span style="color:#f92672">...</span>
+  <span style="color:#66d9ef">end</span>
+<span style="background-color:#3c3d38;display:block;width:100%"><span style="color:#66d9ef">end</span></span></code></pre></div></p>
+
+<p>Define new route:<br />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#66d9ef">Rails</span><span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>routes<span style="color:#f92672">.</span>draw <span style="color:#66d9ef">do</span>
+<span style="background-color:#3c3d38;display:block;width:100%">  namespace <span style="color:#e6db74">:api</span> <span style="color:#66d9ef">do</span>
+</span><span style="background-color:#3c3d38;display:block;width:100%">    namespace <span style="color:#e6db74">:v1</span> <span style="color:#66d9ef">do</span>
+</span>      resources <span style="color:#e6db74">:commits</span>
+<span style="background-color:#3c3d38;display:block;width:100%">    <span style="color:#66d9ef">end</span>
+</span><span style="background-color:#3c3d38;display:block;width:100%">  <span style="color:#66d9ef">end</span>
+</span><span style="color:#66d9ef">end</span></code></pre></div></p>
+
+<p>Will also need to update the location parameter of the response object in the controller to reflect the new route.<br />
+Explained in more detailed on this <a href="https://stackoverflow.com/questions/23582389/rails-nomethoderror-undefined-method-url-for-controller-i-cant-seem-to-res" target="_blank">Stack Overflow answer</a><br />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">render <span style="color:#e6db74">json</span>: @commit, <span style="color:#e6db74">status</span>: <span style="color:#e6db74">:created</span>, <span style="color:#e6db74">location</span>: api_v1_commit_url(@commit)</code></pre></div></p>
+
+<p><code>http://localhost:3000/api/v1/commits/</code> will now hit your API!</p>
+
+<p>Note:<br />
+I had to make sure to permit necessary parameters in the controller before successfully cURL POSTing to the endpoint.</p>
+
+<p><br><br><br><br><br><br><br><br><br><br><br><br />
+<a href="http://railscasts.com/episodes/350-rest-api-versioning?view=asciicast" target="_blank">REST API Versioning - RailsCast</a></p>
+
+<p><a href="https://sourcey.com/building-the-prefect-rails-5-api-only-app/#versioning-your-api" target="_blank">Building the perfect Rails 5 API - Versioning Your API</a></p>
+
+<p><a href="https://stackoverflow.com/questions/3697650/pros-cons-of-storing-serialized-hash-vs-key-value-database-object-in-activereco" target="_blank">https://stackoverflow.com/questions/3697650/pros-cons-of-storing-serialized-hash-vs-key-value-database-object-in-activereco</a></p>
+
+<p><a href="https://www.percona.com/blog/2010/01/21/when-should-you-store-serialized-objects-in-the-database/" target="_blank">https://www.percona.com/blog/2010/01/21/when-should-you-store-serialized-objects-in-the-database/</a></p>
+
+<p>API Tutorial or Checklist<br />
+<a href="https://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application" target="_blank">https://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application</a></p>
+
+<p>Friendly URLs<br />
+<a href="https://github.com/norman/friendly_id" target="_blank">https://github.com/norman/friendly_id</a><br />
+<a href="https://gist.github.com/jcasimir/1209730" target="_blank">https://gist.github.com/jcasimir/1209730</a></p>
+
+<p>Database Design<br />
+<a href="https://www.startuprocket.com/articles/how-to-design-and-prep-a-ruby-on-rails-model-architecture" target="_blank">https://www.startuprocket.com/articles/how-to-design-and-prep-a-ruby-on-rails-model-architecture</a><br />
+<a href="https://agilewarrior.wordpress.com/2010/11/09/a-rails-design-process-by-ryan-singer/" target="_blank">https://agilewarrior.wordpress.com/2010/11/09/a-rails-design-process-by-ryan-singer/</a></p>
+
+<p><a href="https://blog.carbonfive.com/2016/11/16/rails-database-best-practices/" target="_blank">https://blog.carbonfive.com/2016/11/16/rails-database-best-practices/</a><br />
+<a href="http://sparkmasterflex.com/the-very-best-ruby-on-rails-workflow-ever/" target="_blank">http://sparkmasterflex.com/the-very-best-ruby-on-rails-workflow-ever/</a></p>
+
+<p>Authentication:<br />
+<a href="http://www.dailysmarty.com/posts/how-to-use-jwt-authentication-in-a-rails-5-api-app" target="_blank">http://www.dailysmarty.com/posts/how-to-use-jwt-authentication-in-a-rails-5-api-app</a><br />
+<a href="https://sourcey.com/building-the-prefect-rails-5-api-only-app/#authenticating-your-api" target="_blank">https://sourcey.com/building-the-prefect-rails-5-api-only-app/#authenticating-your-api</a><br />
+<a href="https://scotch.io/tutorials/build-a-restful-json-api-with-rails-5-part-two" target="_blank">https://scotch.io/tutorials/build-a-restful-json-api-with-rails-5-part-two</a><br />
+<a href="https://paweljw.github.io/2017/07/rails-5.1-api-with-vue.js-frontend-part-4-authentication-and-authorization/" target="_blank">https://paweljw.github.io/2017/07/rails-5.1-api-with-vue.js-frontend-part-4-authentication-and-authorization/</a><br />
+<a href="https://medium.com/@nick.hartunian/knock-jwt-auth-for-rails-api-create-react-app-6765192e295a" target="_blank">https://medium.com/@nick.hartunian/knock-jwt-auth-for-rails-api-create-react-app-6765192e295a</a><br />
+<a href="https://www.valentinog.com/blog/devise-token-auth-rails-api/" target="_blank">https://www.valentinog.com/blog/devise-token-auth-rails-api/</a><br />
+<a href="https://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth" target="_blank">https://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth</a></p>
+
+<p>Frontend<br />
+<a href="https://medium.com/devtechtipstricks/build-a-simple-rails-api-server-auth0-jwt-authentication-react-from-scratch-in-30-minutes-or-257cbb2a939a" target="_blank">https://medium.com/devtechtipstricks/build-a-simple-rails-api-server-auth0-jwt-authentication-react-from-scratch-in-30-minutes-or-257cbb2a939a</a></p>
+
+<p><a href="https://github.com/lynndylanhurley/devise_token_auth" target="_blank">https://github.com/lynndylanhurley/devise_token_auth</a><br />
+<a href="https://github.com/plataformatec/devise/wiki/How-To:-Simple-Token-Authentication-Example" target="_blank">https://github.com/plataformatec/devise/wiki/How-To:-Simple-Token-Authentication-Example</a></p>
+
+<p>Other:<br />
+<a href="https://www.theredrooffs.com/blog/2017/services-what-i-wish-i-learned-as-a-new-rails-developer" target="_blank">https://www.theredrooffs.com/blog/2017/services-what-i-wish-i-learned-as-a-new-rails-developer</a></p>
+</div>
+
+
+    </div>
+
+    
+  </body>
+</html>
