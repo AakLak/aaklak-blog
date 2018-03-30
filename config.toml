@@ -22,6 +22,7 @@ hrefTargetBlank = true
   commit = false
   rss = true
   comments = true
+  description = "My notes & thoughts on tech."
 #  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
 
 #[[Params.bigimg]]
