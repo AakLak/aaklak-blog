@@ -200,9 +200,10 @@ def commit_params
 end
 {{< /highlight >}}
 
+## And here's where I stopped writing...
+I'll update this with more info when I can.
+Below you can find a ton of amazing Rails API resources & guides I found!
 
-
-<br><br><br><br><br><br><br><br><br><br><br>
 [REST API Versioning - RailsCast](http://railscasts.com/episodes/350-rest-api-versioning?view=asciicast)
 
 [Building the perfect Rails 5 API - Versioning Your API](https://sourcey.com/building-the-prefect-rails-5-api-only-app/#versioning-your-api)

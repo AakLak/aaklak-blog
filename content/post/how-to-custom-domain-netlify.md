@@ -1,5 +1,5 @@
 ---
-title: "How to Set a Custom Domain Name on Netlify in ~~3~~ 2 Steps"
+title: "How to Set a Custom Domain Name on Netlify in just 2 Steps"
 date: 2017-12-14T03:42:50-08:00
 draft: false
 ---
