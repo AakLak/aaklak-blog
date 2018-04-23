@@ -5,7 +5,7 @@ subtitle: ""
 tags: ["Rails", "API", "devise_token_auth", "postman"]
 draft: false
 ---
-My notes on authenicating a Rails 5 API
+My notes on authenticating a Rails 5 API
 <!--more-->
 
 ## Setting up
@@ -19,7 +19,7 @@ $ rake db:migrate
 
 ## Setting up devise_token_auth
 [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth) helps add "Token based authentication for Rails JSON APIs".
-It's compatible with token authentication librarious for multiple frontend libraries such as Angular 2, React, and plain jQuery out of the box.
+It's compatible with token authentication for multiple frontend libraries such as Angular 2, React, and plain jQuery out of the box.
 Add devise_token_auth to your gemfile and bundle.
 
 Basic setup consists of generating the User model and migrating.
@@ -49,3 +49,4 @@ We'll protect everything except the index and show actions.
 {{< highlight ruby>}}
   before_action :authenticate_user!, except: [:index, :show]
 {{< /highlight >}}
+ 
