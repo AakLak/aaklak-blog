@@ -28,7 +28,7 @@ Check out the [devise_token_auth](https://github.com/lynndylanhurley/devise_toke
 $ rails g devise_token_auth:install User auth
 {{< /highlight >}}
 
-Before migraing, remove unneeded attributes in user model & migration ex: confirmable, omniauthable.
+Before migrating, remove unneeded attributes in user model & migration ex: confirmable, omniauthable.
 
 {{< highlight bash >}}
 $ rake db:migrate
@@ -49,4 +49,3 @@ We'll protect everything except the index and show actions.
 {{< highlight ruby>}}
   before_action :authenticate_user!, except: [:index, :show]
 {{< /highlight >}}
- 

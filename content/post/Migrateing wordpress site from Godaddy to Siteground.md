@@ -32,8 +32,3 @@ In GoDaddy's [own words](Benchmarks for PHP 7 consistently show speeds twice as 
 Before:
 https://gtmetrix.com/reports/livingleanprogram.com/Y0J7utMh
 https://www.webpagetest.org/result/180406_W6_80a1488d2fe00c35e25116611e96e3dc/#run2
-
-
-<div class="caption">
-<img src="https://media0.giphy.com/media/3o7TKxZzyBk4IlS7Is/giphy.gif" alt="Yuck Reaction Gif">
-<p class="caption-text">My thoughts on DSLs & no MVC</p></div>
