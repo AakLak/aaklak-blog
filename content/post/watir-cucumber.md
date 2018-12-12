@@ -3,6 +3,7 @@ title: "Web Automation with Watir"
 date: 2018-10-04
 draft: false
 ---
+
 How I use Watir to make my life easier.
 <!--more-->
 # What's Watir?

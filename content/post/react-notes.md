@@ -1,6 +1,6 @@
 ---
 title: "My React Notes"
-date: "January 2, 2006"
+date: 2018-10-04
 subtitle: ""
 tags: []
 draft: true
