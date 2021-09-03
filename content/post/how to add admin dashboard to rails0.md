@@ -3,7 +3,7 @@ title: "Testing with Cucumber & Watir"
 date: 2018-10-16
 subtitle: ""
 tags: ["Ruby", "Testing"]
-draft: false
+draft: true
 ---
 A quick guide on adding an adnmin dashboard to a Rails app using administrate gem.
 <!--more-->
