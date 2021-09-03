@@ -1,6 +1,6 @@
 ---
 title: "How to Add an Admin Dashboard to a Rails API using the Administrate Gem"
-date: 2018-01-30
+date: 2020-01-30
 subtitle: ""
 tags: ["Rails", "API", "administrate", "activeadmin", "rails_admin"]
 draft: false
