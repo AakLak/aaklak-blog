@@ -18,3 +18,7 @@
 ul{
   margin-bottom: 0;
 }
+
+.image-width{
+  max-width: 20em;
+}

@@ -7,14 +7,14 @@ draft: false
 Quick steps on setting up a custom domain name on [Netlify](https://www.netlify.com/).
 <!--more-->
 ## Info
-Site built with [Hugo](https://gohugo.io/) static site generator, [Netlify](https://www.netlify.com/) hosting, and a domain from [Hover]((https://hover.com/OqvbyZbU)).
+Site built with [Hugo](https://gohugo.io/) static site generator, [Netlify](https://www.netlify.com/) hosting, and a domain from [Hover](https://hover.com/OqvbyZbU).
 <sup>Use [this link](https://hover.com/OqvbyZbU) to buy a domain from Hover, and we both get $2 credit!<sup>
 
 ## 1. Add a Custom Domain on Netlify
-Visit Netlify > Your Site > Settings > Domain Management
+Visit Netlify > Click Your Site > Settings > Domain Management
+
 Click "Add a custom domain", enter your domain name, and save.
-<sup>Tip: Netlify [recommends](https://www.netlify.com/docs/custom-domains/#naked-domains) using the "www prefix".</sup>
-![Netlify Domain Management](/img/netlify-domain-management.png)
+![Netlify Domain Management](/img/netlify-domain-management.png)<sup>Tip: Netlify [recommends](https://www.netlify.com/docs/custom-domains/#naked-domains) using the "www prefix".</sup>
 
 ## 2. Add DNS Record for Netlify
 This will point your custom domain name to the content hosted on Netlify.

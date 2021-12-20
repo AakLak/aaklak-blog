@@ -1,16 +1,16 @@
 ---
 title: "How to Add an Admin Dashboard to a Rails API using the Administrate Gem"
-date: 2020-01-30
+date: 2018-01-30
 subtitle: ""
 tags: ["Rails", "API", "administrate", "activeadmin", "rails_admin"]
 draft: false
 ---
-A quick guide on adding an adnmin dashboard to a Rails app using administrate gem.
+A quick guide on adding an adnmin dashboard to a Rails app using the [Administrate](https://github.com/thoughtbot/administrate) gem.
 <!--more-->
 
 # What's an admin dashboard?
-Admin dashboards provide views for your Rails app that allow you to CRUD (create, read update, delete) database records.
-Dashboards can be a nice alternative to the console, and great for non-technical endusers.
+Admin dashboards provide a GUI for your Rails app that allow you to perform CRUD (create, read update, delete) actions on your database.
+Admin Dashboards can be a nice alternative to the console, and a great way for endusers to edit records.
 ![Administrate dashboard example](https://cloud.githubusercontent.com/assets/903327/25823003/a5cc6aee-3408-11e7-8bcb-c62bb7addf40.png)
 
 # Why I Chose the Administrate Gem
@@ -52,8 +52,7 @@ The process is covered well in the documentation, so to to avoid reinventing the
 `derive_class_name': undefined method `class_name' for nil:NilClass (NoMethodError) Did you mean?  class_eval`
 {{< /highlight  >}} or
 {{< highlight bash >}}`PG::UndefinedTable: ERROR:  relation "users" does not exist (ActiveRecord::StatementInvalid)`
-{{< /highlight >}}Make sure that your database associations are all setup properly. I had some questionable associations to adjust.
-[Relevant Github Issue](https://github.com/thoughtbot/administrate/issues/375)
+{{< /highlight >}}Make sure that your database associations are all setup properly. I had some questionable associations to adjust. [Relevant Github Issue](https://github.com/thoughtbot/administrate/issues/375)
 - If you're getting `Unable to autoload constant UserDashboard` etc.:
 You may need to generate files for additional models manually.
 My `user_dashboard.rb` file was created, but empty? I had to manually run
@@ -63,4 +62,4 @@ $ rails g administrate:dashboard User
 *Note: My user model was created by [devise_token_auth gem](https://github.com/lynndylanhurley/devise_token_auth)*
 
 # Thoughts
-Administrate is awesome! Utilizing generators and a MVC setup(**huge plus!**) makes setup & customization simple & familiar.
+Administrate is awesome! Utilizing generators and MVC(**huge plus!**) makes setup & customization simple & familiar.

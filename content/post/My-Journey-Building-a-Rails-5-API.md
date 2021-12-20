@@ -8,14 +8,23 @@ Notes & thoughts on building my first API with Rails 5.
 <!--more-->
 
 ## What am I making?
-This app will be used by developers who write scripts which automate repetitive tasks.
+This app will be used by developers who write scripts that automate repetitive tasks in video games.
 
-Developers will be able to create a profile for their scripts, and use the API to record actions it as automated, ex: runtime, monsters killed, trees cut, fish caught, etc.
+Developers will be able to create a profile for their scripts, and use the API to record the runtime and type/number of tasks automated.
+ex: logs chopped, monsters killed, trees cut, fish caught, etc.
 
-This data can be used to track and compare stats between scripts & individual users.
+The data recorded could be used for:
+
+- Comparing profitability/runtime/number of tasks automated between scripts
+  - <b>As an enduser:</b>
+      - I can decide on a script based on these stats
+      - I can compare my usage stats to that of others
+  - <b>Ex: As a scripter:</b>
+      - I can use the stats for marketing and as a benchmark to compare to others
+- Can act as a high-score system between individual users and scripts
 
 ## Getting Started
-Going to generate a Rails [API only app](http://edgeguides.rubyonrails.org/api_app.html) using PostgreSQL since I'm hosting on [Heroku](https://www.heroku.com/).
+Generate a Rails [API only app](http://edgeguides.rubyonrails.org/api_app.html) using PostgreSQL since I'm hosting on [Heroku](https://www.heroku.com/).
 
 {{< highlight bash >}}
 $ rails new rsscriptstats --api --database=postgresql
@@ -39,7 +48,7 @@ $ rails generate rspec:install
 
 ## Setup up Active Record
 ### Models & Associations
-Going to start with these models:
+Generate necessary models:
 {{< highlight bash >}}
 $ rails g devise_token_auth:install User auth
 $ rails g scaffold Script name:string skill:string bot_for:string game_for:string
@@ -47,17 +56,18 @@ $ rails g scaffold Commit runtime:integer
 $ rails g scaffold Stat task:string amount:float
 {{< / highlight >}}
 
-User model generated using [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth) gem.
+Note: The `User` model was generated using [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth) gem.
 
 
-I learned:
-You can set assocaitions & delete scaffolds via command line scaffold.
-rails d scaffold Stat task:string amount:float
+**I learned:**
+You can set associations & delete scaffolds using the `scaffold` in command line.
+{{< highlight bash >}}rails d scaffold Stat task:string amount:float{{< / highlight >}}
 
 ### Set model associations
-Scripts have many commits, commits belong to a script.
-Commits have many stats, stats belong to a commit.
+The database is setup as such:
+![Versioning API Comic](/img/script-stats-database.png)
 
+Here are some of the database associations and test code:
 {{< highlight ruby >}}
 #/app/models/script.rb
 class Script < ApplicationRecord
@@ -103,13 +113,14 @@ test_script.commits << test_commit_2
 ## Versioning
 ![Versioning API Comic](https://chriskottom.com/images/versioning-commitstrip.jpg)
 
-Decide on an interface strategy. Different strategies explained here:
+I came across multiple ways to handle versioning, research to see which fits your need best.
+Different strategies explained here:
 [Versioning a Rails API by Chris](https://chriskottom.com/blog/2017/04/versioning-a-rails-api/)
 
 I decided on URL namespaceing since it was covered the most thoroughly online, and  was mentioned in the [Infinifum Rails Handbook.](https://handbook.infinum.co/books/rails/Building%20an%20API)
 
 ### Namespacing & Routing
-Going to organize my filestructure to better accommodate for versioned API.
+Organizing my filestructure to better accommodate for versioned API.
 ![Rails API Version Filestructure](https://i.imgur.com/nBy3ykB.png)
 
 You can namespace controllers by using the module keyword:
@@ -152,7 +163,7 @@ Note:
 I had to make sure to permit necessary parameters in the controller before successfully cURL POSTing to the endpoint.
 
 ## Adding Authentication
-Using [devise_token_auth](ttps://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth) gem
+I chose to use the trusty [devise_token_auth](ttps://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth) gem.
 
 Add `devise_token_auth` to gemfile
 {{< highlight ruby >}}
@@ -201,111 +212,67 @@ end
 {{< /highlight >}}
 
 ## And here's where I stopped writing...
-I'll update this with more info when I can.
-Below you can find a ton of amazing Rails API resources & guides I found!
+<i>To be continued...</i>
+Listed below are a ton of amazing Rails API guides & resources that greatly assisted during this process.
 
-[REST API Versioning - RailsCast](http://railscasts.com/episodes/350-rest-api-versioning?view=asciicast)
-
-[Building the perfect Rails 5 API - Versioning Your API](https://sourcey.com/building-the-prefect-rails-5-api-only-app/#versioning-your-api)
-
-https://stackoverflow.com/questions/3697650/pros-cons-of-storing-serialized-hash-vs-key-value-database-object-in-activereco
-
-https://www.percona.com/blog/2010/01/21/when-should-you-store-serialized-objects-in-the-database/
-
-
-API Tutorial or Checklist
-https://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application
-
-Friendly URLs
-https://github.com/norman/friendly_id
-https://gist.github.com/jcasimir/1209730
-
-Database Design
-https://www.startuprocket.com/articles/how-to-design-and-prep-a-ruby-on-rails-model-architecture
-https://agilewarrior.wordpress.com/2010/11/09/a-rails-design-process-by-ryan-singer/
-
-https://blog.carbonfive.com/2016/11/16/rails-database-best-practices/
-http://sparkmasterflex.com/the-very-best-ruby-on-rails-workflow-ever/
-
-Authentication:
-http://www.dailysmarty.com/posts/how-to-use-jwt-authentication-in-a-rails-5-api-app
-https://sourcey.com/building-the-prefect-rails-5-api-only-app/#authenticating-your-api
-https://scotch.io/tutorials/build-a-restful-json-api-with-rails-5-part-two
-https://paweljw.github.io/2017/07/rails-5.1-api-with-vue.js-frontend-part-4-authentication-and-authorization/
-  Knock
-  https://medium.com/@nick.hartunian/knock-jwt-auth-for-rails-api-create-react-app-6765192e295a
-
-devise_token_auth
-  https://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth
-
-Frontend
-https://medium.com/devtechtipstricks/build-a-simple-rails-api-server-auth0-jwt-authentication-react-from-scratch-in-30-minutes-or-257cbb2a939a
-
-Why foreign keys should always be indexed:
-https://alexpeattie.com/blog/stop-forgetting-foreign-key-indexes-in-rails-post-migration-script
-
-
-JWT Token Gems
-https://github.com/jwt/ruby-jwt
-https://github.com/nsarno/knock
-https://github.com/lynndylanhurley/devise_token_auth
-https://github.com/plataformatec/devise/wiki/How-To:-Simple-Token-Authentication-Example
-
-
-Other:
-https://www.theredrooffs.com/blog/2017/services-what-i-wish-i-learned-as-a-new-rails-developer
-
-  JSONAPI-Rails
-  https://github.com/jsonapi-rb/jsonapi-rails
-
-  Belongs to Devise User
-  https://stackoverflow.com/questions/31106980/how-to-create-an-association-between-devise-user-model-and-new-model-in-rails
-
-
-
-Problems & Solutions
-
-  https://www.google.com/search?q=rails+api+%22user%22%3A+%5B+%22must+exist%22+%5D&oq=rails+api+%22user%22%3A+%5B+%22must+exist%22+%5D&aqs=chrome..69i57.1332j0j7&sourceid=chrome&ie=UTF-8
-  Put user migration before others, change date or other method
-
-  https://stackoverflow.com/questions/48334075/activemodelunknownattributeerror-unknown-attribute-when-seeding-belongs-to-re
-
-  https://stackoverflow.com/questions/46837161/passing-post-request-through-postman-for-has-many-association-in-rails
-  https://stackoverflow.com/questions/18486674/rails-model-error-associationtypemismatch-expected-got-string
-
-  https://www.google.com/search?ei=KFpkWtueMoSWjQOT7ZrgBA&q=%22Unpermitted%22+parameter%3A+%3A+%22_attributes%22&oq=%22Unpermitted%22+parameter%3A+%3A+%22_attributes%22&gs_l=psy-ab.3..0i7i30k1j0i7i10i30k1l2.4848.9790.0.10095.4.4.0.0.0.0.91.341.4.4.0....0...1c.1.64.psy-ab..0.4.340...0i8i30k1j0i8i10i30k1j0i10i30k1j0i22i10i30k1j0i22i30k1.0.SMmNrXU8jno
-
-
-https://stormconsultancy.co.uk/blog/development/tools-plugins/generating-code-coverage-metrics-for-a-ruby-on-rails-project-with-simplecov/
-
-Factorygirl & RSpec
-  https://semaphoreci.com/community/tutorials/how-to-test-rails-models-with-rspec
-
-  My Q: https://stackoverflow.com/questions/48499505/devise-factorybot-authentication-for-rspec-post-request
-  https://blog.pardner.com/2012/10/how-to-specify-traits-for-model-associations-in-factorygirl/
-  https://stackoverflow.com/questions/24570281/what-to-add-to-rspec-valid-attributes-when-it-is-validating-related-models
-
-  https://devhints.io/factory_bot
-  https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md
-  https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
-  https://semaphoreci.com/blog/2014/01/14/rails-testing-antipatterns-fixtures-and-factories.html
-  https://stackoverflow.com/questions/11002721/authentication-with-devise-in-rspec-tests
-  https://gist.github.com/kyletcarlson/6234923
-  https://semaphoreci.com/community/tutorials/how-to-test-rails-models-with-rspec
-  https://medium.com/@csofiamsousa/testing-covering-and-documenting-ruby-on-rails-apis-26fe4f4c934d
-
-http://www.thegreatcodeadventure.com/better-rails-5-api-controller-tests-with-rspec-shared-examples/
-
-
-API To Full
- - https://stackoverflow.com/questions/36669981/how-do-you-convert-a-rails-5-api-app-to-a-rails-app-that-can-act-as-both-api-and
- - https://stackoverflow.com/questions/25031985/rails-4-upgrade-jsonparseerror-for-old-sessions
-
-Removing Devise Token Authentication
-  - https://stackoverflow.com/questions/6833161/ruby-how-to-uninstall-devise
-  - rsscriptstats [remove-devise-token-auth] :> rails destroy devise_token_auth:install User
+- [REST API Versioning - RailsCast](http://railscasts.com/episodes/350-rest-api-versioning?view=asciicast)
+- [Building the perfect Rails 5 API - Versioning Your API](https://sourcey.com/building-the-prefect-rails-5-api-only-app/#versioning-your-api)
+- [Pros/Cons of storing serialized hash vs. key/value database object in ActiveRecord?](https://stackoverflow.com/questions/3697650/pros-cons-of-storing-serialized-hash-vs-key-value-database-object-in-activereco)
+- [When Should You Store SQL Serialized Data in the Database?](https://www.percona.com/blog/2010/01/21/when-should-you-store-serialized-objects-in-the-database/)
+- [API Tutorial & Checklist](https://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application)
+- [Why foreign keys should always be indexed](https://alexpeattie.com/blog/stop-forgetting-foreign-key-indexes-in-rails-post-migration-script)
+- [Build a simple Rails API server + Auth0 JWT authentication + React from scratch in 30 minutes (or less)](https://medium.com/devtechtipstricks/build-a-simple-rails-api-server-auth0-jwt-authentication-react-from-scratch-in-30-minutes-or-257cbb2a939a)
+- [Services I wish I Learned as a new Rails Developer](https://www.theredrooffs.com/blog/2017/services-what-i-wish-i-learned-as-a-new-rails-developer)
+- [JSONAPI-Rails Gem](https://github.com/jsonapi-rb/jsonapi-rails)
+- **Friendly URLs for APIs:**
+  - https://github.com/norman/friendly_id
+  - https://gist.github.com/jcasimir/1209730
+- **Database Design**
+  - [How to design and prep a Ruby on Rails model architecture](https://www.startuprocket.com/articles/how-to-design-and-prep-a-ruby-on-rails-model-architecture)
+  - [https://agilewarrior.wordpress.com/2010/11/09/a-rails-design-process-by-ryan-singer/](https://agilewarrior.wordpress.com/2010/11/09/a-rails-design-process-by-ryan-singer/)
+  - [https://blog.carbonfive.com/rails-database-best-practices/](https://blog.carbonfive.com/2016/11/16/rails-database-best-practices/)
+  - [The Very Best Ruby on Rails Workflow Ever](http://sparkmasterflex.com/the-very-best-ruby-on-rails-workflow-ever/)
+- **Authentication:**
+  - [Devise Token Auth](https://www.valentinog.com/blog/devise-token-auth-rails-api/#Adding_the_Authentication_with_Devise_Token_Auth)
+  - http://www.dailysmarty.com/posts/how-to-use-jwt-authentication-in-a-rails-5-api-app
+  - https://sourcey.com/building-the-prefect-rails-5-api-only-app/#authenticating-your-api
+  - https://scotch.io/tutorials/build-a-restful-json-api-with-rails-5-part-two
+  - https://paweljw.github.io/2017/07/rails-5.1-api-with-vue.js-frontend-part-4-authentication-and-authorization/
+- **Jaavascript Web Tokens // Gems:**
+  - [Passing Post request through postman for has_many association in rails](https://medium.com/@nick.hartunian/knock-jwt-auth-for-rails-api-create-react-app-6765192e295a)
+  - https://github.com/jwt/ruby-jwt
+  - https://github.com/nsarno/knock
+  - https://github.com/lynndylanhurley/devise_token_auth
+  - https://github.com/plataformatec/devise/wiki/How-To:-Simple-Token-Authentication-Example
+- **Problems I ran into and their solutions:**
+  - [rails api "user": [ "must exist" ]](https://www.google.com/search?q=rails+api+%22user%22%3A+%5B+%22must+exist%22+%5D&oq=rails+api+%22user%22%3A+%5B+%22must+exist%22+%5D&aqs=chrome..69i57.1332j0j7&sourceid=chrome&ie=UTF-8)
+    Solution: Put user migration before others, change date or other method
+  - [How to create an association between devise user model and new model in rails?](https://stackoverflow.com/questions/31106980/how-to-create-an-association-between-devise-user-model-and-new-model-in-rails)
+  - [Passing Post request through postman for has_many association in rails](https://stackoverflow.com/questions/46837161/passing-post-request-through-postman-for-has-many-association-in-rails)
+  - [Rails 4 upgrade JSON::ParseError for old sessions](https://stackoverflow.com/questions/25031985/rails-4-upgrade-jsonparseerror-for-old-sessions)
+- **Factorygirl & RSpec:**
+  - https://semaphoreci.com/community/tutorials/how-to-test-rails-models-with-rspec
+  - My Q: https://stackoverflow.com/questions/48499505/devise-factorybot-authentication-for-rspec-post-request
+  - https://blog.pardner.com/2012/10/how-to-specify-traits-for-model-associations-in-factorygirl/
+  - https://stackoverflow.com/questions/24570281/what-to-add-to-rspec-valid-attributes-when-it-is-validating-related-models
+  - https://devhints.io/factory_bot
+  - https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md
+- **API To Full Rails App:**
+   - [How do you convert a Rails 5 API app to a rails app that can act as both API and app?](https://stackoverflow.com/questions/36669981/how-do-you-convert-a-rails-5-api-app-to-a-rails-app-that-can-act-as-both-api-and)
+- **Removing Devise Token Authentication:**
+ - [Ruby: how to uninstall Devise?](https://stackoverflow.com/questions/6833161/ruby-how-to-uninstall-devise)
+ - {{< highlight bash >}}rsscriptstats [remove-devise-token-auth] :> rails destroy devise_token_auth:install User
 Running via Spring preloader in process 76916
-      remove  config/initializers/devise_token_auth.rb
-      remove  db/migrate/20171230080350_devise_token_auth_create_users.rb
-     skipped  Concern is already included in the application controller.
-     skipped  Routes already exist for User at auth
+     remove  config/initializers/devise_token_auth.rb
+     remove  db/migrate/20171230080350_devise_token_auth_create_users.rb
+    skipped  Concern is already included in the application controller.
+    skipped  Routes already exist for User at auth{{< /highlight >}}
+- **Testing/RSpec**:
+  - [How To: Test controllers with Rails (and RSpec)](https://github.com/heartcombo/devise/wiki/How-To:-Test-controllers-with-Rails-(and-RSpec))
+  - [Rails Testing Antipatterns: Fixtures and Factories](https://semaphoreci.com/blog/2014/01/14/rails-testing-antipatterns-fixtures-and-factories.html)
+  - [Authentication with Devise in Rspec tests](https://stackoverflow.com/questions/11002721/authentication-with-devise-in-rspec-tests)
+  - [RSpec Model Testing Template](https://gist.github.com/kyletcarlson/6234923)
+  - [How to Test Rails Models with RSpec](https://semaphoreci.com/community/tutorials/how-to-test-rails-models-with-rspec)
+  - [Testing, Covering and Documenting Ruby on Rails APIs](https://medium.com/@csofiamsousa/testing-covering-and-documenting-ruby-on-rails-apis-26fe4f4c934d)
+  - [Better Rails 5 API Controller Tests with RSpec Shared Examples](http://www.thegreatcodeadventure.com/better-rails-5-api-controller-tests-with-rspec-shared-examples/)
+
