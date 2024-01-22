@@ -49,7 +49,7 @@ GeekStorage also allows for PHP 7, and most likely has more optimized & less cro
 # Advice on Picking a Host
 - Research benchmarks! I enjoy a site called [Research as a Hobby](https://researchasahobby.com/hosting-performance-contest-september-2018-roundup/) which does an awesome monthly benchmark on various WordPress hosts
 - Avoid the [EIG family](https://www.google.com/search?q=researchasahobby&oq=researchasahobby+&aqs=chrome..69i57j69i65j69i60j69i59j69i60l2.3963j1j7&sourceid=chrome&ie=UTF-8) of companies due to their practice of overcrowded servers and lackluster support
-- Join Wordpress Facebook/Reddit groups to see what hosts people are enthusiastic about
+- Join WordPress Facebook/Reddit groups to see what hosts people are enthusiastic about
 
 <!-- - Siteground consistently score better than GoDaddy in benchmarks [1](http://www.onlinemediamasters.com/siteground-vs-godaddy-wordpress/) [2](https://inlinehostblogger.com/siteground-vs-godaddy) [3](https://www.wpsitecare.com/performance-of-7-top-wordpress-hosting-companies-compared/)
 - Siteground consistently score better than GoDaddy in benchmarks customer reviews Trustpilot: [G](https://www.trustpilot.com/review/www.godaddy.com)v[S](https://www.trustpilot.com/review/www.siteground.com) WebHostingGeeks: [G](https://webhostinggeeks.com/providers/godaddy)v[S](https://webhostinggeeks.com/providers/siteground) HostAdvice: [G](https://hostadvice.com/hosting-company/godaddy-reviews/)v[S](https://hostadvice.com/hosting-company/siteground-reviews/).
