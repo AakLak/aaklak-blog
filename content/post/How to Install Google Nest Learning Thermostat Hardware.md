@@ -29,7 +29,7 @@ Then remove the existing thermostat's backplate.
 
 ## 3. Install Nest Backplate and Wires
 Hold the backplate at your desired positioning against the wall, and use a pencil to mark the screw holes.
-Screw in the backplate, and inset wires into their appropriate slots.
+Screw in the backplate, and insert wires into their appropriate slots.
 
 <div class="caption">
 <img src="/img/nest-base.jpg" alt="Backplate Installed" class="image-width">
