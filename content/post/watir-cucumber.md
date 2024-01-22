@@ -23,7 +23,7 @@ Put [chromedriver](http://chromedriver.chromium.org/) in a $PATH directory. *Min
 
 
 ## Workflow
-I've found using a [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) like [pry](https://pryrepl.org/) helps speed up development. Instead of incrementally adding steps to and rerunning my script, I can use Pry to get real time feedback.
+I've found using a [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) like [pry](https://pryrepl.org/) helps speed up development. Instead of incrementally adding steps to and rerunning my script, I can use Pry to get real-time feedback.
 
 ## Starting the Browser & Navigating to a page
 Initiate Pry
